@@ -1,4 +1,4 @@
-package org.example.store.storecustomer.dto.api;
+package org.example.store.storecustomer.dto.service;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -10,7 +10,7 @@ import lombok.ToString;
 import java.math.BigDecimal;
 
 /**
- * DTO for customer creation response.
+ * Service layer DTO for creating a new customer.
  */
 @Setter
 @Getter
@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class SaveCustomerResponse {
+public class SaveCustomerRequestDto {
     private String name;
     private BigDecimal balance;
 }

@@ -1,25 +1,28 @@
 package org.example.store.storecustomer.mapper;
 
-import org.example.store.storecustomer.dto.api.SaveCustomerRequest;
-import org.example.store.storecustomer.dto.api.SaveCustomerResponse;
-import org.example.store.storecustomer.dto.service.SaveCustomerDto;
+import org.example.store.storecustomer.dto.api.*;
+import org.example.store.storecustomer.dto.service.AllCustomerResponseDto;
+import org.example.store.storecustomer.dto.service.SaveCustomerRequestDto;
+import org.example.store.storecustomer.dto.service.UpdateCustomerRequestDto;
 import org.example.store.storecustomer.entity.Customer;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
+import java.util.List;
+
+/**
+ * Mapper for converting between Customer entities and DTOs.
+ */
+
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface CustomerMapper {
-    SaveCustomerDto toSaveCustomerDto(Customer customer);
-    Customer toEntityCustomer(SaveCustomerDto customerDto);
-    SaveCustomerDto toSaveCustomerRequest(SaveCustomerRequest saveCustomerRequest);
-    SaveCustomerResponse toSaveCustomerResponse(Customer customer);
-    SaveCustomerDto toSaveCustomerResponse(SaveCustomerRequest saveCustomerRequest);
+    @Mapping(target = "id", ignore = true)
+    Customer toEntity(SaveCustomerRequestDto saveCustomerRequestDto);
+
+    SaveCustomerResponse toSaveResponseFromEntity(Customer customer);
+
+    SaveCustomerRequestDto toSaveRequestDtoFromRequest(SaveCustomerRequest saveCustomerRequest);
+
 }
-// CustomerDto toCustomerDto(Customer customer);
-//    @Mapping(target = "orders", ignore = true)
-//    Customer toCustomer(CustomerDto customerDto);
-//    @Mapping(target = "id", ignore = true)
-//    CustomerDto toCustomerDto(SaveCustomerRequest saveCustomerRequest);
-//    CustomerDto toUpdateCustomerResponse(UpdateCustomerRequest updateCustomerRequest);
-//    CustomerResponse toCustomerResponse(Customer customer);
-//    UpdateCustomerResponse toUpdateCustomerResponse(Customer customer);
