@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!-- Удален DOCTYPE для полной автономности -->
+<module name="Checker">
+    <property name="charset" value="UTF-8"/>
+    <property name="severity" value="error"/>
+
+    <!-- Проверка для контроллеров (*Controller.java) -->
+    <module name="BeforeExecutionExclusionFileFilter">
+        <property name="fileNamePattern" value=".*Controller\.java$"/>
+    </module>
+
+    <module name="TreeWalker">
+        <module name="TypeName">
+            <property name="format" value="^.*(Request|Response)$"/>
+            <property name="tokens" value="CLASS_DEF"/>
+            <message key="type.name"
+                     value="Классы в контроллерах должны заканчиваться на 'Request' или 'Response'"/>
+        </module>
+    </module>
+
+    <!-- Проверка для сервисов (*Service.java) -->
+    <module name="BeforeExecutionExclusionFileFilter">
+        <property name="fileNamePattern" value=".*Service(Impl)?\.java$"/>
+    </module>
+
+    <module name="TreeWalker">
+        <module name="TypeName">
+            <property name="format" value="^.*(RequestDto|ResponseDto)$"/>
+            <property name="tokens" value="CLASS_DEF"/>
+            <message key="type.name"
+                     value="Классы в сервисах должны заканчиваться на 'RequestDto' или 'ResponseDto'"/>
+        </module>
+    </module>
+
+    <!-- Общие правила -->
+    <module name="TreeWalker">
+        <module name="AvoidStarImport"/>
+        <module name="LineLength">
+            <property name="max" value="120"/>
+        </module>
+    </module>
+</module>
