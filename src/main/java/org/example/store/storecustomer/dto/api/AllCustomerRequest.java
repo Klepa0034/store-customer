@@ -11,7 +11,7 @@ import lombok.ToString;
 import java.math.BigDecimal;
 
 /**
- * DTO for customer creation response.
+ * DTO for customer request data.
  */
 @Setter
 @Getter
@@ -19,7 +19,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class SaveCustomerResponse {
+public class AllCustomerRequest {
+    private Long id;
     private String name;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal balance;

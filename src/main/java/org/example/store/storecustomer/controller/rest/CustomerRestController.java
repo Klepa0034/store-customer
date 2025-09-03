@@ -22,7 +22,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * REST controller for customer management operations.
@@ -41,8 +47,45 @@ public class CustomerRestController {
     public ResponseEntity<SaveCustomerResponse> save(@RequestBody SaveCustomerRequest saveCustomerRequest) {
         SaveCustomerRequestDto saveCustomerRequestDto = customerMapper.toSaveRequestDtoFromRequest(saveCustomerRequest);
         SaveCustomerResponse save = customerService.save(saveCustomerRequestDto);
+        int a = 1;
+        if (a > 1) {
+            return new ResponseEntity<>(save, HttpStatus.OK);
+        }
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(save);
     }
+
+    /**
+     * Updates an existing customer.
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<UpdateCustomerResponse> update(@RequestBody UpdateCustomerRequest updateCustomerRequest) {
+        UpdateCustomerRequestDto updateCustomerRequestDto = customerMapper.toUpdateRequestDtoFromRequest(updateCustomerRequest);
+        UpdateCustomerResponse update = customerService.update(updateCustomerRequestDto);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(update);
+    }
+
+    /**
+     * Deletes a customer by ID.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        customerService.deleteById(id);
+        return ResponseEntity
+                .noContent()
+                .build();
+    }
+
+    /**
+     * Retrieves all customers.
+     */
+    @GetMapping
+    public ListCustomerResponse findAll() {
+        List<AllCustomerResponse> all = customerService.findAll();
+        return new ListCustomerResponse(all);
+    }
+
 }

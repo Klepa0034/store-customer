@@ -16,7 +16,7 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <name>store-customer</name>
-    <description>order-service</description>
+    <description>store-customer</description>
 
     <properties>
         <!--region version dependency-->
@@ -29,11 +29,8 @@
         <!--region version dependency-->
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <lombok.version>1.18.38</lombok.version>
-        <mapstruct-processor.version>1.5.5.Final</mapstruct-processor.version>
         <spring-boot-maven-plugin.version>3.5.4</spring-boot-maven-plugin.version>
-
         <!--endregion-->
-
 
     </properties>
 
@@ -42,6 +39,15 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <!--endregion-->
+
+        <!--region spring-boot-testcontainers-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-testcontainers</artifactId>
+            <scope>test</scope>
         </dependency>
         <!--endregion-->
 
@@ -83,6 +89,15 @@
             <artifactId>postgresql</artifactId>
         </dependency>
         <!--endregion-->
+
+        <!--region testcontainers-postgresql-->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--endregion-->
+
 
         <!--region lombok-->
         <dependency>
@@ -129,7 +144,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>${maven-compiler-plugin.version}</version>
+                            <version>${lombok.version}</version>
                         </path>
                         <path>
                             <groupId>org.mapstruct</groupId>

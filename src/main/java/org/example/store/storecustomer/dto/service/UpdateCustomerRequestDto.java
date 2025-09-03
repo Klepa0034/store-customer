@@ -1,6 +1,5 @@
-package org.example.store.storecustomer.dto.api;
+package org.example.store.storecustomer.dto.service;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,7 +10,7 @@ import lombok.ToString;
 import java.math.BigDecimal;
 
 /**
- * DTO for customer creation response.
+ * Service layer DTO for updating an existing customer.
  */
 @Setter
 @Getter
@@ -19,8 +18,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class SaveCustomerResponse {
+public class UpdateCustomerRequestDto {
+    private Long id;
     private String name;
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal balance;
 }

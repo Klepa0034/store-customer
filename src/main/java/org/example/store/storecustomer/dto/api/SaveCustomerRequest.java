@@ -1,5 +1,6 @@
 package org.example.store.storecustomer.dto.api;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,5 +21,6 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 public class SaveCustomerRequest {
     private String name;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal balance;
 }

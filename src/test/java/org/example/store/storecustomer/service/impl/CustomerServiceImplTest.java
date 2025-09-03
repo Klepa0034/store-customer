@@ -1,23 +1,40 @@
 package org.example.store.storecustomer.service.impl;
 
+import ch.qos.logback.classic.spi.EventArgUtil;
+import org.example.store.storecustomer.container.TestContainerConfig;
 import org.example.store.storecustomer.dto.api.SaveCustomerResponse;
-import org.example.store.storecustomer.dto.service.SaveCustomerDto;
+import org.example.store.storecustomer.dto.api.UpdateCustomerResponse;
+import org.example.store.storecustomer.dto.service.SaveCustomerRequestDto;
+import org.example.store.storecustomer.dto.service.UpdateCustomerRequestDto;
 import org.example.store.storecustomer.entity.Customer;
 import org.example.store.storecustomer.mapper.CustomerMapper;
 import org.example.store.storecustomer.repository.CustomerRepository;
+import org.example.store.storecustomer.service.CustomerService;
 import org.instancio.Instancio;
+import org.instancio.InstancioCollectionsApi;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
+
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceImplTest {
     @InjectMocks
@@ -27,41 +44,54 @@ class CustomerServiceImplTest {
     @Mock
     private CustomerMapper customerMapper;
 
-
     @Test
-    void findAllCustomer() {
+    void save() {
         Customer customerOne = Instancio.create(Customer.class);
-        Customer customerTwo = Instancio.create(Customer.class);
-        List<Customer> customers = List.of(customerOne, customerTwo);
-        SaveCustomerDto saveCustomerDto = Instancio.create(SaveCustomerDto.class);
-        SaveCustomerDto saveCustomerDtoTwo = Instancio.create(SaveCustomerDto.class);
-        when(customerRepository.findAll()).thenReturn(customers);
-        when(customerMapper.toSaveCustomerDto(customerOne)).thenReturn(saveCustomerDto);
-        when(customerMapper.toSaveCustomerDto(customerTwo)).thenReturn(saveCustomerDtoTwo);
+        SaveCustomerRequestDto saveCustomerRequestDto = Instancio.create(SaveCustomerRequestDto.class);
+        SaveCustomerResponse saveCustomerResponse = Instancio.create(SaveCustomerResponse.class);
+        when(customerRepository.save(customerOne)).thenReturn(customerOne);
+        when(customerMapper.toEntity(saveCustomerRequestDto)).thenReturn(customerOne);
+        when(customerMapper.toSaveResponseFromEntity(customerOne)).thenReturn(saveCustomerResponse);
 
-        customerService.findAllCustomer();
+        customerService.save(saveCustomerRequestDto);
+        verify(this.customerRepository).save(customerOne);
+
+    }
+    @Test
+    void findAll(){
+        List<Customer> customers = Instancio.ofList(Customer.class).size(5).create();
+        SaveCustomerRequestDto saveCustomerRequestDto = Instancio.create(SaveCustomerRequestDto.class);
+        SaveCustomerResponse saveCustomerResponse = Instancio.create(SaveCustomerResponse.class);
+        when(customerRepository.findAll()).thenReturn(customers);
+
+
+
+        customerService.findAll();
 
         verify(customerRepository).findAll();
 
     }
-
     @Test
-    void insertCustomer() {
-        Customer customer = Instancio.create(Customer.class);
-        SaveCustomerDto saveCustomerDto = Instancio.create(SaveCustomerDto.class);
-        SaveCustomerResponse saveCustomerResponse = Instancio.create(SaveCustomerResponse.class);
-        when(customerRepository.save(customer)).thenReturn(customer);
-        when(customerMapper.toSaveCustomerResponse(customer)).thenReturn(saveCustomerResponse);
-        when(customerMapper.toEntityCustomer(saveCustomerDto)).thenReturn(customer);
+    void deleteById(){
+        Long id = 1L;
 
+        customerService.deleteById(id);
 
-        SaveCustomerResponse result = customerService.insertCustomer(saveCustomerDto);
+        verify(customerRepository).deleteById(id);
+    }
+    @Test
+    void update(){
+        Customer customerOne = Instancio.create(Customer.class);
+        UpdateCustomerRequestDto updateCustomerRequestDto = Instancio.create(UpdateCustomerRequestDto.class);
+        UpdateCustomerResponse updateCustomerResponse = Instancio.create(UpdateCustomerResponse.class);
+        when(customerRepository.save(customerOne)).thenReturn(customerOne);
+        when(customerMapper.toEntity(updateCustomerRequestDto)).thenReturn(customerOne);
+        when(customerMapper.toUpdateResponseFromEntity(customerOne)).thenReturn(updateCustomerResponse);
 
-        verify(customerMapper).toEntityCustomer(saveCustomerDto);
-        verify(customerMapper).toSaveCustomerResponse(customer);
-        verify(customerRepository).save(customer);
-        assertThat(result).isEqualTo(saveCustomerResponse);
+        customerService.update(updateCustomerRequestDto);
 
-
+        verify(customerRepository).save(customerOne);
+        verify(customerMapper).toUpdateResponseFromEntity(customerOne);
+        verify(customerMapper).toEntity(updateCustomerRequestDto);
     }
 }

@@ -25,4 +25,16 @@ public interface CustomerMapper {
 
     SaveCustomerRequestDto toSaveRequestDtoFromRequest(SaveCustomerRequest saveCustomerRequest);
 
+    Customer toEntity(UpdateCustomerRequestDto updateCustomerRequestDto);
+
+    UpdateCustomerResponse toUpdateResponseFromEntity(Customer customer);
+
+    UpdateCustomerRequestDto toUpdateRequestDtoFromRequest(UpdateCustomerRequest updateCustomerRequest);
+
+    Customer toEntity(AllCustomerResponseDto allCustomerResponseDto);
+
+    List<AllCustomerResponse> toAllResponseListFromEntities(List<Customer> customers);
+
+    AllCustomerResponse toAllResponseListFromEntities(Customer customer);
+
 }
